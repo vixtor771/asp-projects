@@ -35,17 +35,6 @@ python main.py
 | `src/utils.py` | Shared helpers |
 | `data/`, `audio/`, `figures/` | Measurement results, input and output audio, figures and tables |
 
-Every script in `src/` also works on its own from the command line, for example:
-
-```bash
-python src/equalizer.py audio/input/speech.wav --curve data/elc_measured.json --level comfortable --smooth 0.5 --play
-python src/equalizer.py --record 10 --phon 50 --strength 0.5    # record, equalize, save
-python src/equalizer.py --mic 10 --phon 50                      # live monitoring through headphones
-python src/elc_measure.py --quick
-```
-
-Use `-h` on any script for all options.
-
 ## Setup
 
 ```bash
