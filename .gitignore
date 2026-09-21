@@ -3,9 +3,3 @@
 .idea/
 __pycache__/
 .DS_Store
-
-# written deliverables are submitted on Canvas, not in this repo
-*_Report.md
-*_Report.pdf
-*Overview.md
-*Overview.pdf
