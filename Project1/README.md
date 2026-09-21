@@ -1,7 +1,5 @@
 # Project 1: Fletcher-Munson Curves of Equal Loudness
 
-EN.520.645 Audio Signal Processing, Fall 2026. Python 3.14, tested on macOS.
-
 ## Run
 
 ```bash
