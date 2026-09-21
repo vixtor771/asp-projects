@@ -17,10 +17,10 @@ python main.py
 
 | Requirement | File |
 |---|---|
-| ISO 226 overview (1 page) | submitted on Canvas (not in this repo) |
+| ISO 226 overview | submitted on Canvas (not in this repo) |
 | My equal-loudness curves | `figures/fig1_elc_measured.png`, data in `data/elc_measured.json` |
 | Equalizer | `src/equalizer.py`, results in `audio/output/` |
-| Report (3 pages) | submitted on Canvas (not in this repo) |
+| Report | submitted on Canvas (not in this repo) |
 
 ## Files
 
