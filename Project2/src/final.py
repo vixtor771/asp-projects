@@ -1,19 +1,12 @@
-"""Final run: rebuild all 12 clips from their STFT magnitude with RTISI and RTISI-LA.
+"""Final run: rebuild all 12 clips from their STFT magnitude with RTISI and RTISI-LA. Run from main.py.
 
-    python reconstruct_all.py
-
-Settings come from the experiments in run_experiments.py (see FINAL below).
+Settings come from the experiments in experiments.py (see FINAL below).
 Output:
   audio/output/<clip>_rtisi.wav, audio/output/<clip>_rtisi_la.wav   reconstructed audio (mono)
   terminal                                                            SER, loudness change, speed
   figures/fig4_final_ser.png/.pdf                                     SER of every clip
 """
 from __future__ import annotations
-
-import os
-import sys
-
-sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "src"))   # all other code lives in src/
 
 import numpy as np
 
@@ -28,7 +21,7 @@ FINAL = {
 }
 
 
-def main() -> None:
+def run() -> None:
     ensure_dirs()
     rows = []
     for name in CLIP_NAMES:
@@ -91,7 +84,3 @@ def plot_ser(rows: list[dict]) -> None:
     ax.legend(loc="upper center", ncol=2, bbox_to_anchor=(0.5, -0.25))
     fig.tight_layout()
     save_fig(fig, "fig4_final_ser")
-
-
-if __name__ == "__main__":
-    main()

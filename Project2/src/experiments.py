@@ -1,7 +1,4 @@
-"""Parameter experiments on all 12 clips, following Section III of the paper.
-
-    python run_experiments.py                 # all five experiments (about 15 minutes)
-    python run_experiments.py lookahead       # only one: scaling, window, overlap, lookahead or iterations
+"""Parameter experiments on all 12 clips, following Section III of the paper. Run from main.py.
 
   scaling     Window scaling check: sum of the squared, overlap-added windows (scaled Hamming
               gives 1, plain Hamming about 1.59); true-phase STFT + overlap-add gives back the
@@ -21,10 +18,7 @@ in figures/ (fig1 scaling, fig2 window, fig3 iterations; overlap and lookahead h
 """
 from __future__ import annotations
 
-import os
-import sys
-
-sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "src"))   # all other code lives in src/
+from functools import cache
 
 import numpy as np
 
@@ -34,13 +28,18 @@ from plot_style import AQUA, BLUE, GRAY, METHOD_COLOR, METHOD_LABEL, ORANGE, plt
 from stft import hamming, istft, pad_signal, scaled_hamming, stft, window_square_sum
 
 TYPES = ("speech", "music")
-CLIPS = {name: load_clip(name) for name in CLIP_NAMES}
+
+
+@cache
+def clips() -> dict:
+    """All 12 clips, loaded once."""
+    return {name: load_clip(name) for name in CLIP_NAMES}
 
 
 def run_setting(setting: dict) -> list[dict]:
     """Run one setting on every clip; returns one row per clip."""
     rows = []
-    for name, (x, fs) in CLIPS.items():
+    for name, (x, fs) in clips().items():
         args = {k: v for k, v in setting.items() if k != "label"}
         result = reconstruct(x, fs, **args)
         rows.append({
@@ -107,7 +106,7 @@ def exp_scaling() -> None:
         print(f"{label:26s} sum of w^2 in the fully overlapped part: {middle.min():.4f} to {middle.max():.4f}")
 
     rows = []
-    for name, (x, fs) in CLIPS.items():
+    for name, (x, fs) in clips().items():
         Lc = window_length(fs)
         S = Lc // 4
         w = scaled_hamming(Lc, S)
@@ -163,7 +162,7 @@ def exp_window() -> None:
         ax.set_xticks(window_list, [f"{ms:g}" for ms in window_list])
         ax.minorticks_off()
         ax.set_xlabel("Window length L (ms)")
-        ax.set_title(f"{t.capitalize()} (mean of {sum(CLIP_TYPE[c] == t for c in CLIPS)} clips)")
+        ax.set_title(f"{t.capitalize()} (mean of {sum(CLIP_TYPE[c] == t for c in clips())} clips)")
     axes[0].set_ylabel("SER (dB)")
     axes[0].legend(loc="lower center")
     fig.suptitle("SER against window length (S = L/4, 8 iterations per frame)", y=1.02)
@@ -230,15 +229,9 @@ EXPERIMENTS = {"scaling": exp_scaling, "window": exp_window, "overlap": exp_over
                "iterations": exp_iterations}
 
 
-def main() -> None:
+def run(names: list[str]) -> None:
+    """Run the named experiments, or all of them when the list is empty."""
     ensure_dirs()
-    names = sys.argv[1:] or list(EXPERIMENTS)
-    for name in names:
-        if name not in EXPERIMENTS:
-            sys.exit(f"Unknown experiment {name!r}; choose from {', '.join(EXPERIMENTS)}")
+    for name in names or list(EXPERIMENTS):
         print(f"\n=== {name} ===")
         EXPERIMENTS[name]()
-
-
-if __name__ == "__main__":
-    main()

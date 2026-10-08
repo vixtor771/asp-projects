@@ -10,16 +10,19 @@ Rebuilds audio from its STFT magnitude only, following Zhu et al. 2007, Sections
 
 ```bash
 cd Project2
-python run_experiments.py      # scaling check and parameter experiments (about 15 minutes)
-python reconstruct_all.py      # final reconstruction of all 12 clips
+python main.py                       # everything: experiments, then final reconstruction (about 16 minutes)
+python main.py experiments           # scaling check and parameter experiments only
+python main.py experiments window    # one or more experiments: scaling, window, overlap, lookahead, iterations
+python main.py final                 # final reconstruction of all 12 clips only
 ```
 
 ## Files
 
 | File | Purpose |
 |---|---|
-| `run_experiments.py` | Window scaling check, then parameter experiments: window length, overlap and asymmetric window, look-ahead, iterations |
-| `reconstruct_all.py` | Final run of RTISI and RTISI-LA on all clips with the chosen settings |
+| `main.py` | Entry point: runs the experiments and the final reconstruction |
+| `src/experiments.py` | Window scaling check, then parameter experiments: window length, overlap and asymmetric window, look-ahead, iterations |
+| `src/final.py` | Final run of RTISI and RTISI-LA on all clips with the chosen settings |
 | `src/common.py` | Paths, clip list with speech or music label, audio loading and saving |
 | `src/stft.py` | Scaled Hamming window, STFT, STFT magnitude, overlap-add inverse, SER |
 | `src/rtisi.py` | RTISI |

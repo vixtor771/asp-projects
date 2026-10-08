@@ -18,7 +18,7 @@ The work went in this order:
 6. Run parameter experiments: window length, overlap and initial phase window, number of look-ahead frames, number of iterations.
 7. Rebuild all 12 clips with the chosen settings and compare speech with music.
 
-The code is in the submitted Project2 folder and uses Python with NumPy. `python run_experiments.py` runs the scaling check and the experiments of Section 7, and `python reconstruct_all.py` produces the final audio of Section 8.
+The code is in the submitted Project2 folder and uses Python with NumPy. `python main.py` runs the scaling check and the experiments of Section 7 and then produces the final audio of Section 8.
 
 ### 2. Data
 
