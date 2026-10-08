@@ -2,6 +2,10 @@
 
 Rebuilds audio from its STFT magnitude only, following Zhu et al. 2007, Sections II and III.
 
+## Report
+
+[Project2_Report.pdf](Project2_Report.pdf), source: [Project2_Report.md](Project2_Report.md)
+
 ## Run
 
 ```bash
