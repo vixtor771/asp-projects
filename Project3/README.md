@@ -8,7 +8,6 @@ Loads HRTFs from SOFA files, visualizes them across 20 subjects, computes the me
 
 ```
 Project3/
-├── Project 3 Head-Related Transfer Functions.docx   # 5-page report
 ├── README.md
 ├── project3.py            # all code: Tasks 2 to 4 (run this)
 ├── requirements.txt
