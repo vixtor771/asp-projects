@@ -12,7 +12,6 @@ Project3/
 ├── README.md
 ├── project3.py            # all code: Tasks 2 to 4 (run this)
 ├── requirements.txt
-├── listening_log.md       # listening test notes (Task 4)
 ├── Data/
 │   ├── HRTFs/             # id01 to id20_measured.sofa (20 subjects)
 │   ├── Audio/             # speech, environment, music1 to 3 (48 kHz mono)
