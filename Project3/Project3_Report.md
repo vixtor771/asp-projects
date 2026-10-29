@@ -12,7 +12,7 @@
 
 ## 2. Visualizing HRTF Data
 
-**(a) File structure.** Each SOFA file stores the HRIRs of 1296 directions for the left and right ear (256 samples each, 44.1 kHz). The directions form a grid of 72 azimuths (0°–355° in 5° steps, 90° = left) and 18 elevations (−41° to +45°), indexed as azimuth index × 18 + elevation index. Figure 1 shows the HRIR of subject id01, left ear, at azimuth 90° and elevation 0°.
+**(a) File structure.** Each SOFA file stores the HRIRs of 1296 directions for the left and right ear (256 samples each, 44.1 kHz). The directions form a grid of 72 azimuths (0°–355° in 5° steps, 90° = left) and 18 elevations (−41° to +45°), indexed as azimuth index × 18 + elevation index. To load an HRIR, the code reads the impulse responses and the source positions directly from the SOFA file, finds the measured direction closest to the requested azimuth and elevation, and takes the row of the chosen ear. Figure 1 shows the HRIR of subject id01, left ear, at azimuth 90° and elevation 0°.
 
 **(b) HRIR ↔ HRTF.** The HRTF is obtained from the HRIR with the FFT, and the IFFT gives back the original HRIR (Figure 1).
 
@@ -28,7 +28,7 @@
 
 **(d) Heatmaps.** Figure 3 shows the left-ear azimuth heatmap (elevation 0°) and elevation heatmap (azimuth 0°) side by side for the five subjects used in Section 4.
 
-![Figure 3](figures/2d_heatmaps.png)
+<img src="figures/2d_heatmaps.png" alt="Figure 3" style="zoom: 50%;" />
 
 *Figure 3. Azimuth heatmaps (left) and elevation heatmaps (right), left ear, for the five subjects used in Section 4.*
 
@@ -37,10 +37,11 @@
 1. **Azimuth:** all subjects are loudest when the source is on the same side as the ear (0°–180°) and much weaker on the opposite side around 270°, where the head blocks the sound. This difference grows with frequency.
 2. **Elevation:** all subjects show a notch between about 6 and 9 kHz that moves to higher frequencies as the source rises.
 3. **Inter-subject differences:** below about 4 kHz the subjects are nearly identical. Above about 5 kHz the positions and depths of the peaks and notches differ from subject to subject, because they depend on the shape of each person's ear.
+4. **Front and back:** at 0° and 180° both ears receive almost the same level, so front and back differ only in the high-frequency detail above about 3 kHz that the pinna creates. This cue is small and differs between subjects, which explains the front/back confusion heard in Section 4.
 
 **(f) Mean HRTF and MSE.** Figure 4 shows the mean magnitude over all 20 subjects. The MSE between each subject and the mean was computed for both heatmaps (Table 1). Along azimuth, id09 is closest to the mean (MSE 22.8 dB²) and id02 is farthest (88.5 dB²). Along elevation, id14 is closest (22.9 dB²) and id08 is farthest (121.6 dB²).
 
-![Figure 4](figures/2f_mean_hrtf.png)
+<img src="figures/2f_mean_hrtf.png" alt="Figure 4" style="zoom:50%;" />
 
 *Figure 4. Mean HRTF over all 20 subjects: azimuth heatmap (left) and elevation heatmap (right).*
 
@@ -63,9 +64,11 @@
 
 The tool is the function spatialize(sofa_path, audio_path, az_start, omega) in project3.py. It takes the HRTF file of one subject, an audio sample, a starting azimuth and a rotation speed in degrees per second. It outputs a stereo file in which the sound moves around the listener at a fixed elevation (0°).
 
-The audio is cut into short overlapping frames. For each frame, the current azimuth is computed from the starting angle and the speed, and the frame is windowed and filtered with that direction's left and right HRIRs. The filtered frames are added back together with overlap-add (OLA), so the change from one HRIR to the next is a smooth crossfade without clicks. Finally, the output is normalized to avoid clipping. Figure 5 shows an example output: while the source is on the left (0°–180°) the left ear is louder, and while it is on the right (180°–360°) the right ear is louder.
+The audio is cut into short overlapping frames. For each frame, the current azimuth is computed from the starting angle and the speed, and the frame is windowed and filtered with that direction's left and right HRIRs. The filtered frames are added back together with overlap-add (OLA), so the change from one HRIR to the next is a smooth crossfade without clicks.
 
-![Figure 5](figures/3_surround_output.png)
+The HRIRs are measured at 44.1 kHz and the audio samples are at 48 kHz, so the HRIRs are first resampled to 48 kHz. Each frame is 1024 samples long (about 21 ms) and overlaps the next one by half. It is multiplied by a Hann window, and at 50% overlap these windows add up to a constant, so overlap-add does not change the loudness. The azimuth of each frame is rounded to the nearest measured direction on the 5° grid, so at 60°/s the HRIR changes about every 83 ms, and the crossfade between frames hides these steps. Finally, the output is normalized to avoid clipping. Figure 5 shows an example output: while the source is on the left (0°–180°) the left ear is louder, and while it is on the right (180°–360°) the right ear is louder.
+
+<img src="figures/3_surround_output.png" alt="Figure 5" style="zoom:50%;" />
 
 *Figure 5. Output of the surround tool for id09, speech, starting at 0° and rotating at 60°/s: azimuth (top) and left − right level difference (bottom).*
 
@@ -75,12 +78,15 @@ The tool was applied to all five audio samples for five subjects: id09 (closest 
 
 ### 4a. Listening analysis
 
-1. **How the perceived direction matches the azimuth trajectory.** For all five subjects the sound clearly follows the trajectory front → left → back → right. Left and right are the clearest, matching the large left/right difference in the azimuth heatmaps (Figure 3). The main error is front/back confusion: front and back are sometimes hard to tell apart.
+1. **How the perceived direction matches the azimuth trajectory.** For all five subjects the sound clearly follows the trajectory front → left → back → right. Left and right are the clearest, matching the large left/right difference in the azimuth heatmaps (Figure 3). The main error is front/back confusion.
 2. **Variations in loudness or frequency balance with direction.** The sound is loudest when the source is at the left or right and weaker in front and behind. This agrees with the heatmaps, where the ear facing the source is strongly boosted and the far ear is attenuated, mostly at high frequencies.
 3. **How the sound differs for the subject farthest from the mean.** id02 is still localized correctly, but its speech sounds much darker than the other subjects. Its HRTF has less high-frequency energy than the mean HRTF (Figure 4), which matches its largest MSE. id09, the subject closest to the mean, sounds the clearest.
+4. **How the three random subjects compare with the mean.** On speech, id09 and id12, the two subjects with the smallest MSE, sounded the most natural. id13 and id16 are almost as far from the mean as id02 along azimuth (Table 1), and they also sounded less natural, in a different way: id13 sounded loud, close and a little dark, and id16 sounded quiet and far away. On music the differences between subjects were smaller than on speech.
 
 ### 4b. Preferred HRTF: id09
 
-- **Sound quality:** clear and natural on both speech and music, without the dull sound of id02.
-- **Positional accuracy:** left and right are very clear, the sound is perceived outside the head, and positions are easy to distinguish. It is also the subject closest to the mean HRTF.
+id09 was the only subject that sounded good on all three criteria for both speech and music.
+
+- **Sound quality:** clear and natural on both speech and music, without the dull sound of id02. Its volume is moderate and it sounds steady.
+- **Positional accuracy:** left and right are very clear, the sound is perceived outside the head, and positions are easy to distinguish. Front and back can still be confused at times. It is also the subject closest to the mean HRTF.
 - **Smoothness during azimuth changes:** the rotation is continuous, with no clicks or jumps.
