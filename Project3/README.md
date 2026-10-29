@@ -4,10 +4,16 @@ ECE 520.445/645 Audio Signal Processing, Fall 2026.
 
 Loads HRTFs from SOFA files, visualizes them across 20 subjects, computes the mean HRTF and per-subject MSE, and renders a sound source rotating around the listener (binaural surround sound with overlap-add).
 
+## Report
+
+[Project3_Report.pdf](Project3_Report.pdf), source: [Project3_Report.md](Project3_Report.md)
+
 ## Files
 
 ```
 Project3/
+├── Project3_Report.pdf    # report
+├── Project3_Report.md     # report source
 ├── README.md
 ├── project3.py            # all code: Tasks 2 to 4 (run this)
 ├── requirements.txt
