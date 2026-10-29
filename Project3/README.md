@@ -23,6 +23,8 @@ Project3/
 
 ## How to run
 
+Python 3.14.
+
 ```bash
 cd Project3
 pip install -r requirements.txt
