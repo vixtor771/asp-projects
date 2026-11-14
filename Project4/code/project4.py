@@ -2,7 +2,7 @@
 Project 4: Linear Predictive Coding (LPC vocoder)
 ECE 520.445/645 Audio Signal Processing, Fall 2026
 
-Run:  python project4.py
+Run:  python code/project4.py
 
 Everything is written from scratch with numpy:
   - LPC coefficients: autocorrelation method + Levinson-Durbin (no lpc/levinson library call)
@@ -24,10 +24,10 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-HERE = os.path.dirname(os.path.abspath(__file__))
+HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))   # the Project4 folder
 AUDIO_DIR = os.path.join(HERE, "Project4", "Project4_LPC_Audio")
 VOICING_DIR = os.path.join(HERE, "Project4", "Project4_LPC_Voicing")
-RECORDING = os.path.join(HERE, "my_recording.wav")       # Part 2 input
+RECORDING = os.path.join(HERE, "recording", "my_recording.wav")       # Part 2 input
 FIG_DIR = os.path.join(HERE, "figures")
 OUT_DIR = os.path.join(HERE, "output_audio")
 

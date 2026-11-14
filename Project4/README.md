@@ -15,9 +15,11 @@ Project4/
 ├── Project4_Report.pdf    # report
 ├── Project4_Report.md     # report source
 ├── README.md
-├── project4.py            # all code (run this)
 ├── requirements.txt
-├── my_recording.wav       # own recording for Part 2
+├── code/
+│   └── project4.py        # all code (run this)
+├── recording/
+│   └── my_recording.wav   # own recording for Part 2
 ├── Project4/              # files provided with the assignment
 │   ├── Project4_LPC.pdf
 │   ├── Project4_LPC_Audio/     # Sample1 to Sample10.wav (16 kHz mono)
@@ -33,7 +35,7 @@ Python 3.14.
 ```bash
 cd Project4
 pip install -r requirements.txt
-python project4.py
+python code/project4.py
 ```
 
 The script prints all result tables and writes all outputs:
